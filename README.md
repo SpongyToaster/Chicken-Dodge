@@ -1,7 +1,6 @@
 # 🐔 Chicken Dodge! — A Funny Vibe-Coded Browser Game
 
 [![Live Demo](https://img.shields.io/badge/🐔_TRY_IT_OUT-Click_here-yellowgreen?style=for-the-badge)](https://spongytoaster.github.io/Chicken-Dodge/)
-
 *A single-file, animated, emoji-powered JavaScript game made with AI collaboration*
 
 ---
