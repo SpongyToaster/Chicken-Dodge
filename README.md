@@ -1,10 +1,19 @@
-🎮 Lab Overview: "Chicken Dodge!"
+# 🐔 Chicken Dodge! — A Funny Vibe-Coded Browser Game
 
-Build a one-page JavaScript game where players move a chicken left/right to avoid falling eggs.
-Designed for a ~2 hour AI-assisted coding session.
+[![Live Demo](https://img.shields.io/badge/🚀%20LIVE%20DEMO-Click%20Here-green?style=for-the-badge)](https://spongytoaster.github.io/chicken-dodge/)  
+*A single-file, animated, emoji-powered JavaScript game made with AI collaboration*
 
-🧠 Starter Prompt (for ChatGPT, Gemini, Copilot, etc.)
+---
 
+## 🎮 What Is This?
+
+This is a vibe-coding lab where students use **AI tools** like ChatGPT, GitHub Copilot, or Google Gemini to co-create a hilarious and simple browser game.
+
+The game logic lives entirely in one `index.html` file — no build steps, no frameworks, just old-school fun with new-school intelligence.
+
+---
+
+## 🧠 Starter Prompt (Paste Into Your AI Assistant)
 "I'm vibe-coding a funny animated browser game using a single index.html file. Help me build a game called \"Chicken Dodge!\" where:
 
 - A chicken moves left/right with arrow keys
@@ -17,6 +26,7 @@ Designed for a ~2 hour AI-assisted coding session.
 - Include brief comments and make it mobile-friendly
 
 No external libraries or separate files. Embed all HTML, CSS, and JavaScript in one file."
+
 
 ## ✅ Learning Objectives
 
