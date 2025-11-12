@@ -3,6 +3,8 @@
 [![Live Demo](https://img.shields.io/badge/🚀%20LIVE%20DEMO-Click%20Here-green?style=for-the-badge)](https://spongytoaster.github.io/chicken-dodge/)  
 *A single-file, animated, emoji-powered JavaScript game made with AI collaboration*
 
+*A single-file, animated, emoji-powered JavaScript game made with AI collaboration*
+
 ---
 
 ## 🎮 What Is This?
