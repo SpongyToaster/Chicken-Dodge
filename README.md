@@ -1,0 +1,37 @@
+🎮 Lab Overview: "Chicken Dodge!"
+
+Build a one-page JavaScript game where players move a chicken left/right to avoid falling eggs.
+Designed for a ~2 hour AI-assisted coding session.
+
+🧠 Starter Prompt (for ChatGPT, Gemini, Copilot, etc.)
+
+"I'm vibe-coding a funny animated browser game using a single index.html file. Help me build a game called \"Chicken Dodge!\" where:
+
+- A chicken moves left/right with arrow keys
+- Eggs fall randomly from the top of the screen
+- The player dodges the eggs
+- If an egg hits the chicken, it’s game over
+- Score increases for every missed egg
+- The game uses emojis or funny graphics
+- Add simple animations, game over screen, and score tracking
+- Include brief comments and make it mobile-friendly
+
+No external libraries or separate files. Embed all HTML, CSS, and JavaScript in one file."
+
+## ✅ Learning Objectives
+
+- 🧠 Prompt AI to help you code a game from scratch  
+- 🎞️ Animate game elements with JavaScript  
+- 🎯 Detect collisions and update game state  
+- 😂 Use creative assets (like emoji) to add humor  
+- 🛠️ Practice debugging and refining with AI help  
+
+---
+
+## 🎯 Bonus Challenges (Optional After Base Game is Built)
+
+- 💥 Add a “splat” sound when the egg hits  
+- 🐔 Animate the chicken when moving  
+- ⏱️ Add difficulty scaling (eggs fall faster over time)  
+- 🕹️ Use a start screen and a “pause” function  
+- 🤪 Add a “funny fact” or taunt each time you lose  
