@@ -1,0 +1,154 @@
+<!-- Vibe Coding Lab: Funny Animated Game - Chicken Dodge! -->
+<!-- Students will guide AI to build a simple, funny, animated browser game in a single HTML file. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐔 Chicken Dodge!</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      overflow: hidden;
+      background: #e6f7ff;
+    }
+    #game {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      background: linear-gradient(to bottom, #e6f7ff, #fff);
+    }
+    #chicken {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: url('https://em-content.zobj.net/source/microsoft/319/chicken_1f414.png') no-repeat center;
+      background-size: contain;
+    }
+    .egg {
+      width: 30px;
+      height: 40px;
+      background: url('https://em-content.zobj.net/source/microsoft-teams/337/egg_1f95a.png') no-repeat center;
+      background-size: contain;
+      position: absolute;
+      top: 0;
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #game-over {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div id="score">Score: 0</div>
+    <div id="chicken"></div>
+    <div id="game-over">
+      <h1>💥 SPLAT! Game Over</h1>
+      <p>Final Score: <span id="final-score"></span></p>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
+  </div>
+
+  <script>
+    const chicken = document.getElementById('chicken');
+    const game = document.getElementById('game');
+    const scoreDisplay = document.getElementById('score');
+    const gameOverScreen = document.getElementById('game-over');
+    const finalScoreText = document.getElementById('final-score');
+
+    let score = 0;
+    let gameRunning = true;
+
+    function moveChicken(dir) {
+      const left = parseInt(window.getComputedStyle(chicken).left);
+      if (dir === 'left' && left > 10) chicken.style.left = left - 20 + 'px';
+      if (dir === 'right' && left < window.innerWidth - 60) chicken.style.left = left + 20 + 'px';
+    }
+
+    function dropEgg() {
+      const egg = document.createElement('div');
+      egg.classList.add('egg');
+      egg.style.left = Math.random() * (window.innerWidth - 30) + 'px';
+      game.appendChild(egg);
+
+      let eggFall = setInterval(() => {
+        if (!gameRunning) return clearInterval(eggFall);
+        const top = parseInt(window.getComputedStyle(egg).top);
+        egg.style.top = top + 5 + 'px';
+
+        const chickenRect = chicken.getBoundingClientRect();
+        const eggRect = egg.getBoundingClientRect();
+        const collision = !(eggRect.right < chickenRect.left ||
+                            eggRect.left > chickenRect.right ||
+                            eggRect.bottom < chickenRect.top ||
+                            eggRect.top > chickenRect.bottom);
+
+        if (collision) {
+          endGame();
+          clearInterval(eggFall);
+        }
+
+        if (top > window.innerHeight) {
+          egg.remove();
+          score++;
+          scoreDisplay.innerText = `Score: ${score}`;
+          clearInterval(eggFall);
+        }
+      }, 20);
+    }
+
+    function startGame() {
+      score = 0;
+      gameRunning = true;
+      chicken.style.left = '50%';
+      gameOverScreen.style.display = 'none';
+      scoreDisplay.innerText = 'Score: 0';
+
+      setInterval(() => {
+        if (gameRunning) dropEgg();
+      }, 1000);
+    }
+
+    function endGame() {
+      gameRunning = false;
+      finalScoreText.innerText = score;
+      gameOverScreen.style.display = 'block';
+    }
+
+    function restartGame() {
+      document.querySelectorAll('.egg').forEach(e => e.remove());
+      startGame();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (!gameRunning) return;
+      if (e.key === 'ArrowLeft') moveChicken('left');
+      if (e.key === 'ArrowRight') moveChicken('right');
+    });
+
+    startGame();
+  </script>
+</body>
+</html>
