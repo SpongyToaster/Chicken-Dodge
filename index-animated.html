@@ -1,0 +1,207 @@
+<!-- Vibe Coding Lab: Funny Animated Game - Chicken Dodge! -->
+<!-- Modified: Bigger chicken, animated crazy eye, varied egg colors, splat effect, and retro music -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐔 Chicken Dodge!</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      overflow: hidden;
+      background: #e6f7ff;
+    }
+    #game {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      background: linear-gradient(to bottom, #e6f7ff, #fff);
+    }
+    #chicken {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: url('https://em-content.zobj.net/source/microsoft/319/chicken_1f414.png') no-repeat center;
+      background-size: contain;
+    }
+    #eye {
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 20px;
+      left: 35px;
+      animation: wobble 0.2s infinite alternate;
+      z-index: 2;
+    }
+    #pupil {
+      width: 8px;
+      height: 8px;
+      background: black;
+      border-radius: 50%;
+      position: absolute;
+      top: 6px;
+      left: 6px;
+    }
+    @keyframes wobble {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(3px, 2px); }
+    }
+    .egg {
+      width: 50px;
+      height: 60px;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      background-size: cover;
+    }
+    .splat {
+      width: 60px;
+      height: 60px;
+      background: url('https://em-content.zobj.net/source/microsoft/337/egg_1f95a.png') no-repeat center;
+      background-size: contain;
+      position: absolute;
+      animation: fadeOut 0.5s forwards;
+    }
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: scale(1.5);
+      }
+    }
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #game-over {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <audio id="bg-music" src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Rolemusic/Pop_Soda/Rolemusic_-_05_-_Beach_Party.mp3" loop autoplay></audio>
+  <div id="game">
+    <div id="score">Score: 0</div>
+    <div id="chicken">
+      <div id="eye"><div id="pupil"></div></div>
+    </div>
+    <div id="game-over">
+      <h1>💥 SPLAT! Game Over</h1>
+      <p>Final Score: <span id="final-score"></span></p>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
+  </div>
+
+  <script>
+    const chicken = document.getElementById('chicken');
+    const game = document.getElementById('game');
+    const scoreDisplay = document.getElementById('score');
+    const gameOverScreen = document.getElementById('game-over');
+    const finalScoreText = document.getElementById('final-score');
+    const music = document.getElementById('bg-music');
+
+    let score = 0;
+    let gameRunning = true;
+
+    const eggColors = ['#fffacd', '#ffb6c1', '#ffe4b5', '#add8e6', '#e0ffff'];
+
+    function moveChicken(dir) {
+      const left = parseInt(window.getComputedStyle(chicken).left);
+      if (dir === 'left' && left > 10) chicken.style.left = left - 20 + 'px';
+      if (dir === 'right' && left < window.innerWidth - 110) chicken.style.left = left + 20 + 'px';
+    }
+
+    function dropEgg() {
+      const egg = document.createElement('div');
+      egg.classList.add('egg');
+      egg.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+      egg.style.backgroundColor = eggColors[Math.floor(Math.random() * eggColors.length)];
+      game.appendChild(egg);
+
+      let eggFall = setInterval(() => {
+        if (!gameRunning) return clearInterval(eggFall);
+        const top = parseInt(window.getComputedStyle(egg).top);
+        egg.style.top = top + 5 + 'px';
+
+        const chickenRect = chicken.getBoundingClientRect();
+        const eggRect = egg.getBoundingClientRect();
+        const collision = !(eggRect.right < chickenRect.left ||
+                            eggRect.left > chickenRect.right ||
+                            eggRect.bottom < chickenRect.top ||
+                            eggRect.top > chickenRect.bottom);
+
+        if (collision) {
+          endGame();
+          clearInterval(eggFall);
+        }
+
+        if (top > window.innerHeight) {
+          const splat = document.createElement('div');
+          splat.classList.add('splat');
+          splat.style.left = egg.style.left;
+          splat.style.top = window.innerHeight - 70 + 'px';
+          game.appendChild(splat);
+          setTimeout(() => splat.remove(), 500);
+          egg.remove();
+          score++;
+          scoreDisplay.innerText = `Score: ${score}`;
+          clearInterval(eggFall);
+        }
+      }, 20);
+    }
+
+    function startGame() {
+      score = 0;
+      gameRunning = true;
+      chicken.style.left = '50%';
+      gameOverScreen.style.display = 'none';
+      scoreDisplay.innerText = 'Score: 0';
+      music.play();
+
+      setInterval(() => {
+        if (gameRunning) dropEgg();
+      }, 1000);
+    }
+
+    function endGame() {
+      gameRunning = false;
+      finalScoreText.innerText = score;
+      gameOverScreen.style.display = 'block';
+      music.pause();
+    }
+
+    function restartGame() {
+      document.querySelectorAll('.egg, .splat').forEach(e => e.remove());
+      startGame();
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (!gameRunning) return;
+      if (e.key === 'ArrowLeft') moveChicken('left');
+      if (e.key === 'ArrowRight') moveChicken('right');
+    });
+
+    startGame();
+  </script>
+</body>
+</html>
